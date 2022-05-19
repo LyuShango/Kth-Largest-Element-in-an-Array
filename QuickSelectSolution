@@ -1,0 +1,50 @@
+class Solution {
+    
+    public int quicksearch(int[] nums, int start, int end){
+        
+        if(start == end){
+            return start;
+        }
+        
+        int pivot = nums[start];
+        int l = start;
+        int r = end;
+        while(l < r){
+            while(l < r && nums[l] <= pivot) l++;
+            while(l < r && nums[r] >= pivot) r--;
+            if(l < r){
+                int temp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = temp;
+            }
+            
+        }
+        if(r == end && nums[r] < pivot){
+            nums[start] = nums[r];
+            nums[r] = pivot;
+            return l;
+        }else{
+            nums[start] = nums[l - 1];
+            nums[l - 1] = pivot;
+            return l - 1;
+        }
+    }
+    
+    
+    public int findKthLargest(int[] nums, int k) {
+        int order = nums.length - k; 
+        int start = 0;
+        int end = nums.length - 1;
+        int index = quicksearch(nums, start, end);
+        while(index != order){
+            if(index < order){
+                start = index + 1;
+                index = quicksearch(nums, start, end);
+            }else{
+                end = index - 1;
+                index = quicksearch(nums, start, end);
+            }
+        }
+        return nums[index];
+    }
+}
